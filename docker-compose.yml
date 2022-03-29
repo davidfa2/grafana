@@ -1,35 +1,13 @@
-version: '3.8'
+version: "3.8"
 services:
-  influxdb:
-    image: influxdb:1.8-alpine
-    container_name: influxdb
+  portainer:
+    image: "10.25.1.22:8082/ngc-local/basic/portainer-ce"
     restart: always
     environment:
-      - INFLUXDB_DB=influx
-      - INFLUXDB_ADMIN_USER=admin
-      - INFLUXDB_ADMIN_PASSWORD=admin
+      - VIRTUAL_PORT=9000
     ports:
-      - '8086:8086'
+      - 8000:8000
+      - 9000:9000
     volumes:
-      - influxdb_data:/var/lib/influxdb
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana-server
-    restart: always
-    depends_on:
-      - influxdb
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_INSTALL_PLUGINS=
-    links:
-      - influxdb
-    ports:
-      - '3000:3000'
-    volumes:
-      - grafana_data:/var/lib/grafana
-      
-volumes:
-  grafana_data: {}
-  influxdb_data: {}
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /operational_data/portainer:/data
